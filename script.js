@@ -8,6 +8,16 @@ function init() {
   initPubnub(channel,flow_url)
 }
 
+let progress = 0;
+let totalAssets = 0;
+let totalSteps  = 0;
+let currentStep = 0;
+function step() {
+var elem = document.getElementById("myBar");
+width = 30;
+elem.style.width = width + "%";
+}
+
 function initPubnub(channel, flow_url) {
   console.log(channel,flow_url)
   // Update this block with your publish/subscribe keys
@@ -25,7 +35,20 @@ function initPubnub(channel, flow_url) {
     },
     message: function (msg) {
       console.log(msg.message);
-            if (msg.message.id === "mf_aO03ZXFrwVln0WaiKFZK") {
+
+      if (msg?.message?.output?.type && msg.message.output.type ==="progress"){
+          totalSteps = msg.message.output.stpes * totalAssets;
+          console.log(totalSteps)
+          currentStep++;
+          let progress = (currentStep/totalSteps) * 100
+          console.log(progress)
+          var elem = document.getElementById("myBar");
+          width = progress;
+          elem.style.width = width + "%";      
+          
+      }
+      
+            if (msg.message.id === "mf_q3Hnx4rABwj4fiKz2UY2") {
                   console.log("r")
                     const payload = msg.message.output;
                     var gallery = document.getElementById("g");
@@ -33,11 +56,9 @@ function initPubnub(channel, flow_url) {
                     var img = document.getElementById(payload.public_id);
                      
                     if (img) {
-                      if (payload.eager) {
-                        img.src = payload.eager[0].secure_url
+                        img.src = payload.secure_url
                         document.getElementById(payload.public_id+"_spinner").style.display = 'none';
-                      }
-              
+                  
                     }
           } else {
               console.log("n")
@@ -54,7 +75,9 @@ function initPubnub(channel, flow_url) {
 function postAssetsToMediaFlows(flow_url,channel) {
            window.cloudinary.customAction.getConfig().then(data => {
               const { assets, cloudName } = data;
-              console.log(assets,cloudName)
+             //set the numebr of assets
+              totalAssets = assets.length
+              console.log(assets,cloudName,totalAssets)
              for (asset of assets) {
                   console.log(asset)
 

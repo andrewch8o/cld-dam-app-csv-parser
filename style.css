@@ -62,7 +62,7 @@ h1 {
 }
 
 .center {
-   margin: 40px 0;
+  margin: 40px 0;
   text-align: center;
 }
 
@@ -137,4 +137,18 @@ h1 {
   color: white;
   background: rgba(0,0,0,0.4);
   font-size: 12px;
+}
+#myProgress {
+  margin: auto;
+  width: 50%;
+  margin-top : 15px;
+  width: 50%;
+  background-color: #ddd;
+}
+
+#myBar {
+  
+  width: 0%;
+  height: 30px;
+  background-color: #04AA6D;
 }
