@@ -4,7 +4,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 function init() {
   const channel = new Date().getTime()
-  const flow_url = params.flow_url || "https://hooks.mediaflows.cloudinary.com/v1/R2rIMz48lucNTVUA7wsQ";
+  const flow_url = params.flow_url || "https://hooks.mediaflows.cloudinary.com/v1/Vevq2pbWgr4UYqaHqj8I";
   initPubnub(channel,flow_url)
 }
 
@@ -37,7 +37,7 @@ function initPubnub(channel, flow_url) {
       console.log(msg.message);
 
       if (msg?.message?.output?.type && msg.message.output.type ==="progress"){
-          totalSteps = msg.message.output.stpes * totalAssets;
+          totalSteps = msg.message.output.total_steps;
           console.log(totalSteps)
           currentStep++;
           let progress = (currentStep/totalSteps) * 100
@@ -80,35 +80,6 @@ function postAssetsToMediaFlows(flow_url,channel) {
               console.log(assets,cloudName,totalAssets)
              for (asset of assets) {
                   console.log(asset)
-
-                 var gallery = document.getElementById("g");
-                 var newNode = document.createElement('div');
-                newNode.className ="frame"
-        
-                var newImage = document.createElement('img');
-                 newImage.className = "main-img"
-                 newImage.src = asset.secure_url
-                 newImage.id = asset.public_id
-                 
-                var splinnerImage = document.createElement('img');
-                splinnerImage.id = asset.public_id+"_spinner"
-                splinnerImage.className = "child-img"
-                splinnerImage.src = "https://res.cloudinary.com/damitai/image/upload/spinner.gif"
-        
-                 newNode.appendChild(newImage)
-                 newNode.appendChild(splinnerImage)
-                 gallery.prepend(newNode);
-
-
-
-
-
-
-
-
-
-
-               
                   post(flow_url,channel,asset)
             }
             
